@@ -1,0 +1,45 @@
+html,
+body {
+  @include media-breakpoint-up(lg) {
+    height: 100%;
+  }
+}
+
+.app {
+  display: grid;
+  height: 100%;
+  padding: 1.5rem;
+  grid-gap: $grid-gutter-width;
+  grid-template-areas:
+    "settings"
+    "preview"
+    "output";
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: 5fr 7fr;
+    grid-template-rows: 3fr 1fr;
+    grid-template-areas:
+      "settings preview"
+      "output output";
+  }
+
+  @include media-breakpoint-up(xl) {
+    grid-template-columns: 3fr 5fr 3fr;
+    grid-template-rows: auto;
+    grid-template-areas: "settings preview output";
+  }
+}
+
+.settings {
+  overflow-y: auto;
+  grid-area: settings;
+}
+
+.preview {
+  grid-area: preview;
+}
+
+.output {
+  overflow-y: auto;
+  grid-area: output;
+}

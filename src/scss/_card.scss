@@ -1,0 +1,13 @@
+.card-header {
+  padding-bottom: 0;
+  font-size: $font-size-lg;
+  font-weight: $headings-font-weight;
+  border-bottom: none;
+}
+
+.card-title {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}

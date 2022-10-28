@@ -1,0 +1,76 @@
+.preview {
+  position: relative;
+  background-color: #002234; // $surface-dark-900
+  background-image: radial-gradient(circle at top left, #20485f, #002234);
+
+}
+
+.preview-modal {
+  padding: 2rem 1rem;
+
+  @include media-breakpoint-up(lg) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  }
+}
+
+.preview-modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 75%;
+  padding: 1.5rem 3.25rem;
+  background: #002234; // Default, will be overridden by pop-up theme
+  border-radius: .5rem;
+  box-shadow: 0 0 1px 0 rgba($black, .5), 0 8px 10px 0 rgba($black, .5);
+
+  @include media-breakpoint-up(sm) {
+    width: 452px;
+    margin: 0 auto;
+  }
+
+  @include media-breakpoint-up(lg) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  @at-root .theme-light & {
+    background-color: #fff;
+  }
+}
+
+.preview-close-button {
+  position: absolute;
+  top: .875rem;
+  right: .875rem;
+  width: 25px;
+  height: 25px;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: $white;
+  text-align: center;
+
+  @at-root .theme-light & {
+    color: $black;
+  }
+}
+
+.preview-modal-msg {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.preview-iframe-content {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  border: none;
+}

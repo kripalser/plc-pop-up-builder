@@ -5,7 +5,7 @@
 @import "bootstrap/scss/maps";
 
 // Overrides
-
+@import "variables";
 
 // Remainder of Bootstrap required parts
 @import "bootstrap/scss/root";
@@ -48,4 +48,7 @@
 @import "bootstrap/scss/utilities/api";
 
 // Additional custom code
-
+@import "card";
+@import "layout";
+@import "preview";
+@import "output";

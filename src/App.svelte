@@ -22,8 +22,6 @@
         es: { termsTitle: 'Términos y condiciones',             buttonText: 'Obtener bonificación' },
     };
 
-    const isSurveyEnabled = false;
-
     let theme = 'dark';
     let htmlLang = 'en';
     let type = 'bonus';
@@ -31,6 +29,26 @@
     let image = { url: 'https://cdn-aws.platincasino.com/img/solitics/en/1201620481524032_FriendshipPlus.jpg', width: 600, height: 150 };
     let text = 'Lorem ipsum dolor sit amet! Consectetur elit adipisicing aperiam architecto: asperiores **dolor: HARUM** inventore iure libero nihil numquam officiis optio possimus **quasi rem sequi tenetur**, vero voluptates!\n\nAlias asperiores eligendi fuga iste **molestias ratione reprehenderit** saepe sed tempora. Accusantium aperiam esse id libero omnis porro quidem. Mollitia officia, quod!';
     let footnote = '18+ begambleaware.org';
+    let survey = {
+        event: 'SURVEY EVENT',
+        name: 'SURVEY123',
+        feedbackTitle: 'Thank you for participating!',
+        options: [
+            {
+                buttonText: 'Option A',
+                feedback: 'You voted for the option A. Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+            },
+            {
+                buttonText: 'Option B',
+                feedback: 'You voted for the option B. Atque debitis est facere facilis maiores odit quo recusandae soluta!',
+            },
+            {
+                buttonText: 'Option C',
+                feedback: 'You voted for the option C. Aliquid amet deleniti dolores eligendi itaque molestiae neque, numquam officiis quia voluptas?',
+            },
+        ],
+        useButtonTextAsValue: false,
+    };
 
     $: terms = { title: translations[htmlLang].termsTitle, content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium explicabo fuga iste maxime voluptatibus aliquam animi aperiam.' }
     $: button = { text: translations[htmlLang].buttonText, link: '/en/home.html' };
@@ -101,16 +119,22 @@
                         text-align: center;
                         border-top: 1px solid rgba(${textColorRGB}, .15);
                     }
+                    .text-center {
+                        text-align: center;
+                    }
                     .btn {
                         display: inline-block;
                         padding: .875rem 2.5rem;
                         margin-top: 2.5rem;
+                        font-family: inherit;
                         font-size: .875rem;
                         font-weight: 600;
                         color: #fff;
                         text-align: center;
                         text-decoration: none;
                         vertical-align: middle;
+                        cursor: pointer;
+                        border: none;
                         border-radius: 10rem;
                     }
                     .btn + .btn {
@@ -124,20 +148,46 @@
                     }
                     .btn-block {
                         display: block;
+                        width: 100%;
+                    }
+                    .d-none {
+                        display: none !important;
                     }
                 </sty`+`le>
             </head>
             <body>
-                ${title ? `<div class="title">${title}</div>` : ''}
-                ${type === 'bonus' && image.url ? `<img src="${image.url}"${image.width && image.height ? ` width="${image.width}" height="${image.height}"` : ''} alt="">` : ''}
-                ${marked(text)}
-                ${type === 'bonus' && terms.title && terms.content ? `<details><summary>${terms.title}</summary>${terms.content}</details>` : ''}
-                ${type === 'bonus' ? `<a class="btn btn-primary btn-block" href="${button.link}">${button.text ? button.text : '&nbsp;'}</a>` : ''}
-                ${type === 'bonus' && footnote ? `<div class="footnote">${footnote}</div>` : ''}
+                <div id="content">
+                    ${title ? `<div class="title">${title}</div>` : ''}
+                    ${image.url ? `<img src="${image.url}"${image.width && image.height ? ` width="${image.width}" height="${image.height}"` : ''} alt="">` : ''}
+                    ${marked(text)}
+                    ${type === 'bonus' && terms.title && terms.content ? `<details><summary>${terms.title}</summary>${terms.content}</details>` : ''}
+                    ${type === 'bonus' ? `<a class="btn btn-primary btn-block" href="${button.link}">${button.text ? button.text : '&nbsp;'}</a>` : ''}
+                    ${type === 'bonus' && footnote ? `<div class="footnote">${footnote}</div>` : ''}
+                    ${type === 'survey' ? survey.options.map((option, i) => {
+                        return `<button class="btn btn-primary btn-block"${i === 0 ? ' style="margin-top: 1rem;"' : ''} onclick="submit(${i + 1})"${survey.useButtonTextAsValue === true ? ` data-option="OPTION ${String.fromCharCode(i + 64 + 1)}"` : ''}>${option.buttonText}</button>`;
+                    }).join('') : ''}
+                </div>
+                ${type === 'survey' ? survey.options.map((option, i) => {
+                    return `<div class="feedback feedback-${i + 1} d-none"><div class="title">${survey.feedbackTitle}</div><p class="text-center">${option.feedback}</p></div>`
+                }).join('') : ''}
             </body>
-            ${isSurveyEnabled && type === 'survey' ? `
+            ${type === 'survey' ? `
                 <scr`+`ipt>
-                    console.log('Will log only if it is a survey');
+                    var $content = document.getElementById('content');
+
+                    function submit(id) {
+                        $content.classList.add('d-none');
+                        document.querySelector('.feedback-' + id).classList.remove('d-none');
+
+                        if (parent.$solitics) {
+                            var customFields = {
+                                'surveyName': '${survey.name}',
+                                'option': event.currentTarget.getAttribute('data-option') || event.currentTarget.innerText,
+                            };
+
+                            parent.$solitics.emit('${survey.event}', 0, customFields);
+                        }
+                    }
                 </scr`+`ipt>
             ` : ''}
         </html>
@@ -165,6 +215,13 @@
     function handleCopyButtonMouseleave(e) {
         e.target.classList.remove('has-tooltip');
     }
+
+    // Solitics mock
+    window.$solitics = {
+        emit: (transactionType, transactionAmount, customFields) => {
+            alert(`The following data will be submitted.\nEvent: ${transactionType}, survey name: ${customFields.surveyName}, selected option: ${customFields.option}. \nℹ️ This alert is shown only for debugging purposes, it won't appear in the real pop-up.`);
+        },
+    };
 </script>
 
 <div class="settings">
@@ -185,7 +242,7 @@
                 <div class="form-text">This setting only affects the appearance of the content. Don't forget to set an appropriate theme in the dashboard.</div>
             </fieldset>
             <!-- Language -->
-            <div>
+            <div class="mb-4">
                 <label class="form-label" for="formLanguage">Language</label>
                 <select class="form-select" id="formLanguage" bind:value={htmlLang}>
                     {#each languages as language}
@@ -194,38 +251,34 @@
                 </select>
                 <div class="form-text">This setting sets the default value of some fields (for example,  the Terms and Conditions title) in the selected language. It also adds an appropriate <code>lang</code> attribute to the <code>&lt;html&gt;</code> element.<br><mark>Note: please let me know if the translations need to be updated or any language is missing.</mark></div>
             </div>
+            <!-- Type -->
+            <fieldset>
+                <legend class="form-label">Type</legend>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" id="formTypeBonus" name="type" type="radio" value="bonus" bind:group={type}>
+                    <label class="form-check-label" for="formTypeBonus">Bonus</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" id="formTypeSurvey" name="type" type="radio" value="survey" bind:group={type}>
+                    <label class="form-check-label" for="formTypeSurvey">Survey</label>
+                </div>
+            </fieldset>
         </div>
     </div>
-    <div class="card">
+    <div class="card{type === 'survey' ? ' mb-3' : ''}">
         <div class="card-header">Content</div>
         <div class="card-body border-bottom">
-            {#if isSurveyEnabled}
-                <!-- Type -->
-                <fieldset class="mb-4">
-                    <legend class="form-label">Type</legend>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" id="formTypeBonus" name="type" type="radio" value="bonus" bind:group={type}>
-                        <label class="form-check-label" for="formTypeBonus">Bonus</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" id="formTypeSurvey" name="type" type="radio" value="survey" bind:group={type}>
-                        <label class="form-check-label" for="formTypeSurvey">Survey</label>
-                    </div>
-                </fieldset>
-            {/if}
             <!-- Title -->
             <div class="mb-3">
                 <label class="form-label" for="formTitle">Title</label>
                 <input class="form-control" id="formTitle" type="text" bind:value={title} />
             </div>
-            {#if type === 'bonus' }
-                <!-- Image -->
-                <div class="mb-3">
-                    <label class="form-label" for="formImageUrl">Image URL</label>
-                    <input class="form-control" id="formImageUrl" type="text" bind:value={image.url}>
-                    <div class="form-text">Add a link to AWS. Example: https://cdn-aws.platincasino.com/img/solitics/en/bonus.jpg.</div>
-                </div>
-            {/if}
+            <!-- Image -->
+            <div class="mb-3">
+                <label class="form-label" for="formImageUrl">Image URL</label>
+                <input class="form-control" id="formImageUrl" type="text" bind:value={image.url}>
+                <div class="form-text">Add a link to AWS. Example: https://cdn-aws.platincasino.com/img/solitics/en/bonus.jpg.</div>
+            </div>
             <!-- Text -->
             <div>
                 <label class="form-label" for="formText">Text</label>
@@ -268,14 +321,50 @@
                     <div class="form-text">If you don't need the footnote, leave this field blank.</div>
                 </div>
             </div>
-        {:else }
-            <!-- Survey -->
-            <div class="card-body">
-                <div class="card-title">Options</div>
-                <div class="alert alert-info">Survey options coming soon.</div>
-            </div>
         {/if}
     </div>
+    {#if type === 'survey'}
+        <!-- Survey -->
+        <div class="card">
+            <div class="card-header">Survey</div>
+            <div class="card-body border-bottom">
+                <div class="mb-3">
+                    <label class="form-label" for="formSurveyEvent">Event</label>
+                    <input class="form-control" id="formSurveyEvent" type="text" bind:value={survey.event}>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="formSurveyName">Name</label>
+                    <input class="form-control" id="formSurveyName" type="text" bind:value={survey.name}>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="formSurveyFeedbackTitle">Feedback title</label>
+                    <input class="form-control" id="formSurveyFeedbackTitle" type="text" bind:value={survey.feedbackTitle}>
+                </div>
+            </div>
+            {#each survey.options as { buttonText, feedback }, i}
+                <div class="card-body border-bottom">
+                    <div class="card-title">Option {String.fromCharCode(i + 64 + 1)}</div>
+                    <div class="mb-3">
+                        <label class="form-label" for="formSurveyOptionButtonText{i}">Button text</label>
+                        <input class="form-control" id="formSurveyOptionButtonText{i}" type="text" bind:value={buttonText}>
+                    </div>
+                    <div>
+                        <label class="form-label" for="formSurveyFeedbackText">Feedback text</label>
+                        <textarea class="form-control" id="formSurveyFeedbackText" rows="6" bind:value={feedback}></textarea>
+                    </div>
+                </div>
+            {/each}
+            <div class="card-body">
+                <div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" id="formSurveyUseButtonTextAsValue" type="checkbox" bind:checked={survey.useButtonTextAsValue}>
+                        <label class="form-check-label" for="formSurveyUseButtonTextAsValue">Use button text as selected option</label>
+                    </div>
+                    <div class="form-text">If checked, the clicked button's text will be used as an option's value. Otherwise, a generic value will be used (OPTION A, OPTION B, or OPTION C).</div>
+                </div>
+            </div>
+        </div>
+    {/if}
 </div>
 
 <div class="preview">

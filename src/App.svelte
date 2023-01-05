@@ -86,14 +86,8 @@
                         color: #33b3bd;
                         text-decoration: underline;
                     }
-                    p, details {
+                    p {
                         margin: 1rem 0 0;
-                    }
-                    details {
-                        margin-left: 1em;
-                        font-size: .75rem;
-                        color: rgba(${textColorRGB}, .6);
-                        text-indent: -1em;
                     }
                     summary {
                         margin-bottom: .25rem;
@@ -111,13 +105,19 @@
                         color: #00a0ac;
                         text-align: center;
                     }
-                    .footnote {
+                    .footer {
                         padding-top: 1rem;
                         margin-top: 2rem;
                         font-size: .75rem;
-                        color: rgba(${textColorRGB}, .38);
                         text-align: center;
+                        color: rgba(${textColorRGB}, .6);
                         border-top: 1px solid rgba(${textColorRGB}, .15);
+                    }
+                    .footnote {
+                        color: rgba(${textColorRGB}, .38);
+                    }
+                    details + .footnote {
+                        margin-top: .25rem;
                     }
                     .text-center {
                         text-align: center;
@@ -160,12 +160,11 @@
                     ${title ? `<div class="title">${title}</div>` : ''}
                     ${image.url ? `<img src="${image.url}"${image.width && image.height ? ` width="${image.width}" height="${image.height}"` : ''} alt="">` : ''}
                     ${marked(text)}
-                    ${type === 'bonus' && terms.title && terms.content ? `<details><summary>${terms.title}</summary>${terms.content}</details>` : ''}
                     ${type === 'bonus' ? `<a class="btn btn-primary btn-block" href="${button.link}">${button.text ? button.text : '&nbsp;'}</a>` : ''}
-                    ${type === 'bonus' && footnote ? `<div class="footnote">${footnote}</div>` : ''}
                     ${type === 'survey' ? survey.options.map((option, i) => {
                         return `<button class="btn btn-primary btn-block"${i === 0 ? ' style="margin-top: 1rem;"' : ''} onclick="submit(${i + 1})"${survey.useButtonTextAsValue === true ? ` data-option="OPTION ${String.fromCharCode(i + 64 + 1)}"` : ''}>${option.buttonText}</button>`;
                     }).join('') : ''}
+                    ${terms.title && terms.content || footnote ? `<div class="footer">${terms.title && terms.content ? `<details><summary>${terms.title}</summary>${terms.content}</details>` : ''}${footnote ? `<div class="footnote">${footnote}</div>` : ''}</div>` : ''}
                 </div>
                 ${type === 'survey' ? survey.options.map((option, i) => {
                     return `<div class="feedback feedback-${i + 1} d-none"><div class="title">${survey.feedbackTitle}</div><p class="text-center">${option.feedback}</p></div>`
@@ -287,19 +286,6 @@
             </div>
         </div>
         {#if type === 'bonus' }
-            <!-- Terms -->
-            <div class="card-body border-bottom">
-                <div class="card-title">Terms and conditions</div>
-                <div class="mb-3">
-                    <label class="form-label" for="formTermsTitle">Title</label>
-                    <input class="form-control" id="formTermsTitle" type="text" bind:value={terms.title}>
-                    <div class="form-text">If you don't need the Terms and Conditions, leave this field blank.</div>
-                </div>
-                <div>
-                    <label class="form-label" for="formTermsContent">Content</label>
-                    <textarea class="form-control" id="formTermsContent" rows="3" bind:value={terms.content}></textarea>
-                </div>
-            </div>
             <!-- Button -->
             <div class="card-body border-bottom">
                 <div class="card-title">Button</div>
@@ -313,15 +299,28 @@
                     <div class="form-text">Add a relative link with a preceding slash and a locale. Example: /en/home.html.</div>
                 </div>
             </div>
-            <!-- Footnote -->
-            <div class="card-body">
-                <div>
-                    <label class="form-label" for="formFootnote">Footnote</label>
-                    <input class="form-control" id="formFootnote" type="text" bind:value={footnote}/>
-                    <div class="form-text">If you don't need the footnote, leave this field blank.</div>
-                </div>
-            </div>
         {/if}
+        <!-- Terms -->
+        <div class="card-body border-bottom">
+            <div class="card-title">Terms and conditions</div>
+            <div class="mb-3">
+                <label class="form-label" for="formTermsTitle">Title</label>
+                <input class="form-control" id="formTermsTitle" type="text" bind:value={terms.title}>
+                <div class="form-text">If you don't need the Terms and Conditions, leave this field blank.</div>
+            </div>
+            <div>
+                <label class="form-label" for="formTermsContent">Content</label>
+                <textarea class="form-control" id="formTermsContent" rows="3" bind:value={terms.content}></textarea>
+            </div>
+        </div>
+        <!-- Footnote -->
+        <div class="card-body">
+            <div>
+                <label class="form-label" for="formFootnote">Footnote</label>
+                <input class="form-control" id="formFootnote" type="text" bind:value={footnote}/>
+                <div class="form-text">If you don't need the footnote, leave this field blank.</div>
+            </div>
+        </div>
     </div>
     {#if type === 'survey'}
         <!-- Survey -->

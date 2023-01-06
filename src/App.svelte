@@ -162,12 +162,12 @@
                     ${marked(text)}
                     ${type === 'bonus' ? `<a class="btn btn-primary btn-block" href="${button.link}">${button.text ? button.text : '&nbsp;'}</a>` : ''}
                     ${type === 'survey' ? survey.options.map((option, i) => {
-                        return `<button class="btn btn-primary btn-block"${i === 0 ? ' style="margin-top: 1rem;"' : ''} onclick="submit(${i + 1})"${survey.useButtonTextAsValue === true ? ` data-option="OPTION ${String.fromCharCode(i + 64 + 1)}"` : ''}>${option.buttonText}</button>`;
+                        return option.buttonText && `<button class="btn btn-primary btn-block"${i === 0 ? ' style="margin-top: 1rem;"' : ''} onclick="submit(${i + 1})"${survey.useButtonTextAsValue === true ? ` data-option="OPTION ${String.fromCharCode(i + 64 + 1)}"` : ''}>${option.buttonText}</button>`;
                     }).join('') : ''}
                     ${terms.title && terms.content || footnote ? `<div class="footer">${terms.title && terms.content ? `<details><summary>${terms.title}</summary>${terms.content}</details>` : ''}${footnote ? `<div class="footnote">${footnote}</div>` : ''}</div>` : ''}
                 </div>
                 ${type === 'survey' ? survey.options.map((option, i) => {
-                    return `<div class="feedback feedback-${i + 1} d-none"><div class="title">${survey.feedbackTitle}</div><p class="text-center">${option.feedback}</p></div>`
+                    return option.buttonText && `<div class="feedback feedback-${i + 1} d-none"><div class="title">${survey.feedbackTitle}</div><p class="text-center">${option.feedback}</p></div>`
                 }).join('') : ''}
             </body>
             ${type === 'survey' ? `
@@ -346,6 +346,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="formSurveyOptionButtonText{i}">Button text</label>
                         <input class="form-control" id="formSurveyOptionButtonText{i}" type="text" bind:value={buttonText}>
+                        <div class="form-text">If you don't need this option, leave this field blank.</div>
                     </div>
                     <div>
                         <label class="form-label" for="formSurveyFeedbackText">Feedback text</label>

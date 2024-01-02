@@ -1,13 +1,14 @@
 // Required Bootstrap parts
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/maps";
+@import "bootstrap/scss/variables-dark";
 
 // Overrides
 @import "variables";
 
-// Remainder of Bootstrap required parts
+// Remainder of required Bootstrap parts
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
 @import "bootstrap/scss/root";
 
 // Optional Bootstrap parts
@@ -48,6 +49,7 @@
 @import "bootstrap/scss/utilities/api";
 
 // Additional custom code
+@import "reboot";
 @import "card";
 @import "layout";
 @import "preview";

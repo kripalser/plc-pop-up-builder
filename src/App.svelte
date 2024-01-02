@@ -26,7 +26,7 @@
     let htmlLang = 'en';
     let type = 'bonus';
     let title = 'Lorem ipsum dolor';
-    let image = { url: 'https://cdn-aws.platincasino.com/img/solitics/en/1201620481524032_FriendshipPlus.jpg', width: 600, height: 150 };
+    let image = { url: 'https://placehold.co/600x150/3b6785/7394ae/jpg?font=open-sans&text=Image%20placeholder', width: 600, height: 150 };
     let text = 'Lorem ipsum dolor sit amet! Consectetur elit adipisicing aperiam architecto: asperiores **dolor: HARUM** inventore iure libero nihil numquam officiis optio possimus **quasi rem sequi tenetur**, vero voluptates!\n\nAlias asperiores eligendi fuga iste **molestias ratione reprehenderit** saepe sed tempora. Accusantium aperiam esse id libero omnis porro quidem. Mollitia officia, quod!';
     let footnote = '18+ begambleaware.org';
     let survey = {
@@ -53,7 +53,8 @@
     $: terms = { title: translations[htmlLang].termsTitle, content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium explicabo fuga iste maxime voluptatibus aliquam animi aperiam.' }
     $: button = { text: translations[htmlLang].buttonText, link: '/en/home.html' };
 
-    const fontFaceStyles = `@font-face {font-family: 'Open Sans';src: url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Regular.eot');src: url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Regular.eot#iefix') format('embedded-opentype'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Regular.woff2') format('woff2'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Regular.woff') format('woff'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Regular.ttf') format('truetype'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Regular.svg#Regular') format('svg');font-weight: normal;font-style: normal;}@font-face {font-family: 'Open Sans';src: url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Semibold.eot');src: url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Semibold.eot#iefix') format('embedded-opentype'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Semibold.woff2') format('woff2'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Semibold.woff') format('woff'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Semibold.ttf') format('truetype'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Semibold.svg#Semibold') format('svg');font-weight: bold;font-style: normal;}`;
+    // const fontFaceStyles = `@font-face {font-family: 'Open Sans';src: url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Regular.eot');src: url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Regular.eot#iefix') format('embedded-opentype'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Regular.woff2') format('woff2'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Regular.woff') format('woff'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Regular.ttf') format('truetype'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Regular.svg#Regular') format('svg');font-weight: normal;font-style: normal;}@font-face {font-family: 'Open Sans';src: url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Semibold.eot');src: url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Semibold.eot#iefix') format('embedded-opentype'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Semibold.woff2') format('woff2'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Semibold.woff') format('woff'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Semibold.ttf') format('truetype'), url('https://cdn-aws.platincasino.com/fonts/OpenSans/20200419142200/OpenSans-Semibold.svg#Semibold') format('svg');font-weight: bold;font-style: normal;}`;
+    const fontFaceStyles = '';
 
     $: textColorRGB = (theme === 'light') ? '0, 0, 0' : '255, 255, 255';
     $: markup = htmlclean(`
@@ -276,7 +277,7 @@
             <div class="mb-3">
                 <label class="form-label" for="formImageUrl">Image URL</label>
                 <input class="form-control" id="formImageUrl" type="text" bind:value={image.url}>
-                <div class="form-text">Add a link to AWS. Example: https://cdn-aws.platincasino.com/img/solitics/en/bonus.jpg.</div>
+                <div class="form-text">Add a direct link to an image. Example: https://www.example.com/img/solitics/en/bonus.jpg.</div>
             </div>
             <!-- Text -->
             <div>

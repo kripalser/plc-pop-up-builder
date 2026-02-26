@@ -9,13 +9,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^5.1.0",
-    "bootstrap": "^5.2.2",
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "bootstrap": "^5.3.8",
     "htmlclean": "^3.0.8",
-    "marked": "^15.0.12",
-    "sass": "1.78.0",
-    "svelte": "^5.33.19",
+    "marked": "^17.0.3",
+    "sass": "1.97.3",
+    "svelte": "^5.53.5",
     "svelte-preprocess": "^6.0.3",
-    "vite": "^6.4.1"
+    "vite": "^7.3.1"
   }
 }
